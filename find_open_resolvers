@@ -329,6 +329,29 @@ Every IP address in the range is tested in batches of (by default) 100 in a sele
 
 By default this queries for the FQDN 'www.xyzzy.net' which is an arbitrary choice that is unlikely to be authoritatively served by any target IP. Should a target IP return actual results for this FQDN then it is likely to be an open recursive resolver. If 'www.xyzzy.net' no longer exists in the global DNS then you may wish to specify another FQDN.
 
+=head2 Multiple ranges
+
+This script currently only supports scanning one contiguous range of IP addresses, so if you need to feed it multiple ranges (perhaps from a file) then you'll have to work around it with scripting and accept that it will only do one range at a time in parallel.
+
+It's not actually massively slower to split ranges up; I scan a /24 in 14 seconds or the two /25s that make it up in 7 seconds plus 9 seconds.
+
+=head3 On the command line
+
+Something like:
+
+    $ for range in 1.2.3.0/24 4.5.6.7-5.6.8.9;
+        do ./find_open_resolvers $range;
+    done
+
+=head3 From a file
+
+    $ cat ranges.txt
+    1.2.3.0/24
+    4.5.6.7-5.6.8.9
+    $ while read iprange;
+        do ./find_open_resolvers $iprange;
+    done < ./ranges.txt
+
 =head1 AUTHOR
 
 Andy Smith <andy-git-f-o-r@bitfolk.com>
