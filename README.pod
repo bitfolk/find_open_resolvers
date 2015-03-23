@@ -8,7 +8,7 @@ find_open_resolvers -- Finds open DNS resolvers inside a given IP range.
 
 =head1 SYNOPSIS
 
-find_open_resolvers.pl [options] [IP range]
+find_open_resolvers [options] [IP range]
 
  Options:
     --queries  simultaneous queries to perform (100)
