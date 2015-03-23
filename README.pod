@@ -1,0 +1,88 @@
+=pod
+
+=head1 NAME
+
+find_open_resolvers.pl -- Finds open DNS resolvers inside a given IP range
+
+=head1 SYNOPSIS
+
+find_open_resolvers.pl [options] [IP range]
+
+ Options:
+    --queries  simultaneous queries to perform (100)
+    --retries  number of retries of DNS query (2)
+    --timeout  timeout for DNS query in seconds (1)
+    --fqdn     Fully Qualified Domain Name to query for (www.xyzzy.net)
+    --verbose  be verbose
+    --help     display brief help
+    --man      display full man page
+
+ IP range      Range of IPv4 or v6 addresses
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<IP range>
+
+B<Required>. Range of IPv4 or IPv6 addresses to check for open resolvers. Will iterate through them one by one. Accepts:
+
+=over 4
+
+=item * A single address (192.168.0.1)
+
+=item * A CIDR range (192.68.0.0/24)
+
+=item * A range, enclosed in quotes, specifying start to finish ('192.168.0.4 - 192.168.1.2')
+
+=back
+
+=item B<-q>, B<--queries>
+
+How many simultaneous DNS queries to be working on at any one time. Defaults to 100.
+
+=item B<-r>, B<--retries>
+
+Number of retries to perform for each DNS query in the event of no response. Defaults to 2.
+
+=item B<-t>, B<--timeout>
+
+How long in seconds to wait for a response from each DNS query. Defaults to 1.
+
+=item B<-f>, B<--fqdn>
+
+Fully Qualified Domain Name (i.e., a host name) to query for. Should be something that no IP address is likely to be an authoritative DNS server for.  Defaults to 'www.xyzzy.net'.
+
+=item B<-v>, B<--verbose>
+
+Operate verbosely.
+
+=item B<-h>, B<-?>, B<--help>
+
+Display a brief help message.
+
+=item B<--man>
+
+Display documentation in manual page format.
+
+=back
+
+=head1 DESCRIPTION
+
+Pings off a bunch of DNS queries against every IP address in the specified range in order to see if any of them are likely to be open DNS resolvers.
+
+Every IP address in the range is tested in batches of (by default) 100 in a select loop. Testing large ranges may take a very long time.
+
+By default this queries for the FQDN 'www.xyzzy.net' which is an arbitrary choice that is unlikely to be authoritatively served by any target IP. Should a target IP return actual results for this FQDN then it is likely to be an open recursive resolver. If 'www.xyzzy.net' no longer exists in the global DNS then you may wish to specify another FQDN.
+
+=head1 AUTHOR
+
+Andy Smith <andy@bitfolk.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright © 2012-2013 Andy Smith <andy@bitfolk.com>.
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the Perl Artistic License.
+
