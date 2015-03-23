@@ -244,7 +244,7 @@ __END__
 
 =head1 NAME
 
-find_open_resolvers.pl -- Finds open DNS resolvers inside a given IP range
+find_open_resolvers -- Finds open DNS resolvers inside a given IP range.
 
 =head1 SYNOPSIS
 
@@ -319,11 +319,11 @@ By default this queries for the FQDN 'www.xyzzy.net' which is an arbitrary choic
 
 =head1 AUTHOR
 
-Andy Smith <andy@bitfolk.com>
+Andy Smith <andy-git-f-o-r@bitfolk.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright © 2012-2013 Andy Smith <andy@bitfolk.com>.
+Copyright © 2012-2015 Andy Smith <andy-git-f-o-r@bitfolk.com>.
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the Perl Artistic License.
