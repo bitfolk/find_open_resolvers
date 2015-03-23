@@ -204,8 +204,20 @@ sub handle_result
     # might also be empty. Both of those are okay, but if there i any sort of
     # response other than that then it's probably an open resolver.
     if (defined $packet and $packet->answer) {
-        print "!!! Got answer from $ip - possible open resolver!\n";
-        $packet->print if ($verbose);
+        my $response  = $packet->header->qr;
+        my $recursion = $packet->header->ra;
+        my $code      = $packet->header->rcode;
+
+        if ($response and $recursion and $code =~ /NOERROR/) {
+            # There was a response, recursion was available and there was
+            # NOERROR, so this is probably bad.
+            print "!!! Got answer from $ip - possible open resolver!\n";
+            $packet->print if ($verbose);
+        } elsif ($verbose) {
+            print "!!! Got an answer from $ip but it wasn't qr && ra &&"
+                . "NOERROR:\n";
+            $packet->print;
+        }
     } else {
         logger("No answer from $ip") if ($verbose);
     }
