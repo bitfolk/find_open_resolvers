@@ -173,13 +173,21 @@ sub check_resolver
     # Go.
     my $sock = $dns->bgsend($fqdn, 'A');
 
-    # Record the IP address, Net::DNS::Resolver object and starting time
-    # against this socket.
-    $state{$sock}{ip}   = $ip->ip;
-    $state{$sock}{dns}  = $dns;
-    $state{$sock}{when} = time();
+    if (defined $sock) {
+        # Record the IP address, Net::DNS::Resolver object and starting time
+        # against this socket.
+        $state{$sock}{ip}   = $ip->ip;
+        $state{$sock}{dns}  = $dns;
+        $state{$sock}{when} = time();
 
-    $sel->add($sock);
+        $sel->add($sock);
+    } else {
+        my $error = $dns->errorstring;
+
+        chomp($error);
+
+        logger("Query to " . $ip->ip . " failed: $error");
+    }
 }
 
 # Read a DNS response from a socket that is ready.
